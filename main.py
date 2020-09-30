@@ -50,20 +50,16 @@ else:
 Please follow the instructions at each input step and at any of the inputs if you would like to exit the program, just enter 'exit' as the input.
 """)
 
-
 # MAIN CODE
 
 ## MAIN INPUT
+
 ticker =  input(f"""Please enter a stock ticker, for example, Apple Incorporated would be AAPL.
 
 """)
 
-
 ## MAIN CLASSES
 class Yahoo():
-    def __init__(self, ticker):
-        self.ticker = ticker
-
     def Company_Name(self, ticker):
         coname = yf.Ticker(ticker)
         company = coname.info['longName']
@@ -75,5 +71,19 @@ class Yahoo():
 
 
 ### PRINT OUTPUTS
-print(Yahoo().Price())
-print(Yahoo().Company_Name())
+
+print("""Here are the details for stock: {company}:
+      """)
+
+#FIRST INITIAL TABLE
+d = PrettyTable()
+d.field_names = ["Details", "-", "Payable by Purchaser"]
+d.add_row(["Settlement Date","",""])
+d.add_row(["","",""])
+d.add_row(["Sale Price","","$""{:.2f}".format(Yahoo.company)])
+d.add_row(["Less Deposit","","$""{:.2f}".format(Yahoo.stock_price)])
+d.add_row([color.BOLD +color.UNDERLINE + "Balance" +color.END,"", color.BOLD +color.UNDERLINE + "$""{:.2f}".format(balance) +color.END])
+
+print(d)
+print(Yahoo.Company_Name)
+print(Yahoo.Price)
