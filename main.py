@@ -50,36 +50,30 @@ else:
 Please follow the instructions at each input step and at any of the inputs if you would like to exit the program, just enter 'exit' as the input.
 """)
 
-# main code
-## search testing
+
+# MAIN CODE
+
+## MAIN INPUT
+ticker =  input(f"""Please enter a stock ticker, for example, Apple Incorporated would be AAPL.
+
+""")
+
+
+## MAIN CLASSES
 class Yahoo():
-    def Prices(self, symbol):
-        return yahoo.get_live_price(symbol)
-        
+    def __init__(self, ticker):
+        self.ticker = ticker
+
+    def Company_Name(self, ticker):
+        coname = yf.Ticker(ticker)
+        company = coname.info['longName']
+        return (company)
+    
+    def Price(self, ticker):
+        stock_price = yahoo.get_live_price(ticker)
+        return (stock_price)
 
 
-symbol =  input(f"""please enter a stock ticker 
-""")
-print(f"""{yahoo.get_live_price(symbol)}
-""")
-print(Yahoo().Prices(symbol))
-
-###Classes GENERAL
-class Person:
-  def __init__(self, name, age):
-    self.name = name
-    self.age = age
-p1 = Person("John", 36)
-print(p1.name)
-print(p1.age)
-
-
-### Yahoo Classes
-
-
-msft = yf.Ticker(symbol)
-company_name = msft.info['longName']
-
-print(company_name)
-
-#Output = 'Microsoft Corporation'
+### PRINT OUTPUTS
+print(Yahoo().Price())
+print(Yahoo().Company_Name())
