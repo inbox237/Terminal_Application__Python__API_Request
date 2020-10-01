@@ -18,20 +18,12 @@ import colorama
 import datetime
 from colorama import Fore, Back
 from yahoo_fin.stock_info import get_data
+from Average import Average
+from Yahoo import Yahoo
+from Color import Color
 
 colorama.init(autoreset=True)
-class color:
-   PURPLE = '\033[95m'
-   CYAN = '\033[96m'
-   DARKCYAN = '\033[36m'
-   BLUE = '\033[94m'
-   GREEN = '\033[92m'
-   YELLOW = '\033[93m'
-   RED = '\033[91m'
-   BOLD = '\033[1m'
-   UNDERLINE = '\033[4m'
-   END = '\033[0m'
-   
+
 
 # To skip welcome message and go to instructions and entering stock ticker
 if "--help" in sys.argv:
@@ -66,14 +58,6 @@ def main():
                    return
                 check_ticker = yahoo.get_live_price(ticker)
                 
-                class Yahoo:
-                    def company_name(self, ticker):
-                        coname = yf.Ticker(ticker)
-                        company = coname.info['longName']
-                        return (company)
-                    def price(self, ticker):
-                        stock_price = yahoo.get_live_price(ticker)
-                        return (stock_price)
                 
                 yahoo_master = Yahoo()
                 
@@ -87,27 +71,19 @@ def main():
                 start_pd = start_time.strftime("%Y-%m-%d")
                 ticker_days= get_data(ticker, start_date=start_date_notime, end_date=end_date_notime, index_as_date = True, interval="1d")
                     
-                ### Average of Prices
-                class Average:
-                    def ticker_average(self, ticker):
-                        start_period = 0
-                        avlist = []
-                        for i in range(len(ticker_days)):
-                            avlist.append(ticker_days.iloc[start_period,4])
-                            start_period = start_period +1
-                        average_value = (sum(avlist) / len(avlist))
-                        return (average_value)
+                    
+
                         
                 average_master = Average()
                 
                 #OUTPUT TABLE
                 d = PrettyTable()
-                d.field_names = ([color.BOLD +color.UNDERLINE + "Company" + color.END, color.BOLD +color.UNDERLINE + "Current LIVE Price" +color.END, color.BOLD +color.UNDERLINE + "Average Price 30 Days" +color.END])
-                d.add_row([color.BOLD +color.BLUE +  f"{ticker.upper()} - {yahoo_master.company_name(ticker)}"+ color.END,color.BOLD +color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker))+color.END,"$""{:.2f}".format(average_master.ticker_average(ticker))+color.END])
+                d.field_names = ([Color.BOLD +Color.UNDERLINE + "Company" + Color.END, Color.BOLD +Color.UNDERLINE + "Current LIVE Price" +Color.END, Color.BOLD +Color.UNDERLINE + "Average Price 30 Days" +Color.END])
+                d.add_row([Color.BOLD +Color.BLUE +  f"{ticker.upper()} - {yahoo_master.company_name(ticker)}"+ Color.END,Color.BOLD +Color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker))+Color.END,"$""{:.2f}".format(average_master.ticker_average(ticker_days))+Color.END])
                 print(d)
                 
             except:
-                print(Fore.RED + color.BOLD +"Ticker must be a valid Stock Ticker, please try again.")
+                print(Fore.RED + Color.BOLD +"Ticker must be a valid Stock Ticker, please try again.")
                 
 main()
 
