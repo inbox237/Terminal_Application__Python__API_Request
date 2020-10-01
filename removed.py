@@ -20,3 +20,22 @@ print(p1.age)
 print(f"""{yahoo.get_live_price(symbol)}
 """)
 print(Yahoo().Price(symbol))
+
+
+#FIRST INITIAL TABLE
+d = PrettyTable()
+d.field_names = ["Details", "-", "Payable by Purchaser"]
+d.add_row(["Settlement Date","",""])
+d.add_row(["","",""])
+d.add_row(["Sale Price","","$""{:.2f}".format(Yahoo.company_name)])
+d.add_row(["Less Deposit","","$""{:.2f}".format(Yahoo.price)])
+d.add_row([color.BOLD +color.UNDERLINE + "Balance" +color.END,"", color.BOLD +color.UNDERLINE + "$""{:.2f}".format(balance) +color.END])
+
+print(d)
+
+
+
+
+
+
+"$""{:.2f}".format(yahoo_master.price(ticker))

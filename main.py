@@ -1,7 +1,6 @@
 # import all my modules
 
 import sys
-import datetime
 from prettytable import PrettyTable
 import requests
 import json
@@ -13,11 +12,12 @@ import requests_html
 import yahoo_fin.stock_info as yahoo
 from yahoo_finance import Share
 import yfinance as yf
-
+import argparse
 import pdb
 import colorama
 import datetime
 from colorama import Fore, Back
+from yahoo_fin.stock_info import get_data
 
 colorama.init(autoreset=True)
 class color:
@@ -47,43 +47,77 @@ elif "--price" in sys.argv:
 #Welcome message
 else:
    print("""Welcome, this is Joel's Yahoo finance stock price checker.
+   
 Please follow the instructions at each input step and at any of the inputs if you would like to exit the program, just enter 'exit' as the input.
 """)
 
 # MAIN CODE
-
-## MAIN INPUT
-
-ticker =  input(f"""Please enter a stock ticker, for example, Apple Incorporated would be AAPL.
-
-""")
-
-## MAIN CLASSES
-class Yahoo():
-    def Company_Name(self, ticker):
+### MAIN CLASS
+class Yahoo:
+    
+    def company_name(self, ticker):
         coname = yf.Ticker(ticker)
         company = coname.info['longName']
         return (company)
     
-    def Price(self, ticker):
+    def price(self, ticker):
         stock_price = yahoo.get_live_price(ticker)
         return (stock_price)
 
+yahoo_master = Yahoo()
 
-### PRINT OUTPUTS
 
-print("""Here are the details for stock: {company}:
-      """)
+## MAIN INPUT
+ticker =  input(f"""To get the latest LIVE price of any Stock please enter a stock ticker, for example, Apple Incorporated would be entered as AAPL.
 
-#FIRST INITIAL TABLE
+""")
+
+
+### Testing
+print(datetime.datetime.today().strftime("%m/%d/%Y"))
+start_time = datetime.datetime.now() - datetime.timedelta(30)
+start_date = start_time.strftime("%m/%d/%Y")
+print(start_date)
+
+#OUTPUT TABLE
 d = PrettyTable()
-d.field_names = ["Details", "-", "Payable by Purchaser"]
-d.add_row(["Settlement Date","",""])
-d.add_row(["","",""])
-d.add_row(["Sale Price","","$""{:.2f}".format(Yahoo.company)])
-d.add_row(["Less Deposit","","$""{:.2f}".format(Yahoo.stock_price)])
-d.add_row([color.BOLD +color.UNDERLINE + "Balance" +color.END,"", color.BOLD +color.UNDERLINE + "$""{:.2f}".format(balance) +color.END])
-
+d.field_names = ([color.BOLD +color.UNDERLINE + "Company" + color.END, color.BOLD +color.UNDERLINE + "Current LIVE Price" +color.END, color.BOLD +color.UNDERLINE + "Average Price 30 Days" +color.END])
+d.add_row([color.BOLD +color.BLUE +  f"{ticker.upper()} - {yahoo_master.company_name(ticker)}"+ color.END,color.BOLD +color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker))+color.END,""])
 print(d)
-print(Yahoo.Company_Name)
-print(Yahoo.Price)
+
+
+##Dates Defined
+end_time = datetime.datetime.today().strftime("%m/%d/%Y")
+start_time = datetime.datetime.now() - datetime.timedelta(30)
+
+end_date_notime = datetime.datetime.now().strftime("%m/%d/%Y")
+start_date_notime = start_time.strftime("%m/%d/%Y")
+
+end_pd = datetime.datetime.now().strftime("%Y-%m-%d")
+start_pd = start_time.strftime("%Y-%m-%d")
+ticker_days= get_data(ticker, start_date=start_date_notime, end_date=end_date_notime, index_as_date = True, interval="1d")
+    
+
+
+
+### Average of Prices
+class Average:
+    start_period = 0
+    for i in range(len(ticker_days)):
+        print(ticker_days.iloc[start_period,4])
+        start_period = start_period +1
+
+
+print(start_date_notime)
+print(end_date_notime)
+
+print(end_pd)
+print(start_pd)
+
+
+print(ticker_days)
+
+print(len(ticker_days))
+
+
+            
