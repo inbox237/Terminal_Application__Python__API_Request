@@ -35,7 +35,9 @@ print(d)
 
 
 
+ticker =  input(f"""To get the latest LIVE price of any Stock please enter a stock ticker, for example, Apple Incorporated would be entered as AAPL.
 
+""")
 
 
 "$""{:.2f}".format(yahoo_master.price(ticker))
