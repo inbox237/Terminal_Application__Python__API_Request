@@ -54,12 +54,10 @@ Please follow the instructions at each input step and at any of the inputs if yo
 # MAIN CODE
 ### MAIN CLASS
 class Yahoo:
-    
     def company_name(self, ticker):
         coname = yf.Ticker(ticker)
         company = coname.info['longName']
         return (company)
-    
     def price(self, ticker):
         stock_price = yahoo.get_live_price(ticker)
         return (stock_price)
@@ -67,57 +65,66 @@ class Yahoo:
 yahoo_master = Yahoo()
 
 
+
+
+
 ## MAIN INPUT
 ticker =  input(f"""To get the latest LIVE price of any Stock please enter a stock ticker, for example, Apple Incorporated would be entered as AAPL.
 
 """)
 
+def main():
+   while True:
+      price = None
+      while price is None:
+         try:
+            p1 = input ("""Please enter the """ + color.BOLD + "Price" +color.END+""" of your property including GST:
+""")
+            if p1 == "exit":
+               print("Program is now exiting, thank you...")
+               return
+            price = float(p1)
+         except:
+            print(Fore.RED + color.BOLD +"Price must be a number!, please try again.")
 
-### Testing
-print(datetime.datetime.today().strftime("%m/%d/%Y"))
-start_time = datetime.datetime.now() - datetime.timedelta(30)
-start_date = start_time.strftime("%m/%d/%Y")
-print(start_date)
 
-#OUTPUT TABLE
-d = PrettyTable()
-d.field_names = ([color.BOLD +color.UNDERLINE + "Company" + color.END, color.BOLD +color.UNDERLINE + "Current LIVE Price" +color.END, color.BOLD +color.UNDERLINE + "Average Price 30 Days" +color.END])
-d.add_row([color.BOLD +color.BLUE +  f"{ticker.upper()} - {yahoo_master.company_name(ticker)}"+ color.END,color.BOLD +color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker))+color.END,""])
-print(d)
+
+
+
+
+
+
+
+
+
 
 
 ##Dates Defined
-end_time = datetime.datetime.today().strftime("%m/%d/%Y")
 start_time = datetime.datetime.now() - datetime.timedelta(30)
-
+start_date = start_time.strftime("%m/%d/%Y")
+end_time = datetime.datetime.today().strftime("%m/%d/%Y")
 end_date_notime = datetime.datetime.now().strftime("%m/%d/%Y")
 start_date_notime = start_time.strftime("%m/%d/%Y")
-
 end_pd = datetime.datetime.now().strftime("%Y-%m-%d")
 start_pd = start_time.strftime("%Y-%m-%d")
 ticker_days= get_data(ticker, start_date=start_date_notime, end_date=end_date_notime, index_as_date = True, interval="1d")
     
-
-
-
 ### Average of Prices
 class Average:
     start_period = 0
+    avlist = []
     for i in range(len(ticker_days)):
-        print(ticker_days.iloc[start_period,4])
+        avlist.append(ticker_days.iloc[start_period,4])
         start_period = start_period +1
+    average_value = (sum(avlist) / len(avlist))
+
+#OUTPUT TABLE
+d = PrettyTable()
+d.field_names = ([color.BOLD +color.UNDERLINE + "Company" + color.END, color.BOLD +color.UNDERLINE + "Current LIVE Price" +color.END, color.BOLD +color.UNDERLINE + "Average Price 30 Days" +color.END])
+d.add_row([color.BOLD +color.BLUE +  f"{ticker.upper()} - {yahoo_master.company_name(ticker)}"+ color.END,color.BOLD +color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker))+color.END,"$""{:.2f}".format(Average.average_value)+color.END])
+print(d)
 
 
-print(start_date_notime)
-print(end_date_notime)
-
-print(end_pd)
-print(start_pd)
 
 
-print(ticker_days)
-
-print(len(ticker_days))
-
-
-            
+main()
