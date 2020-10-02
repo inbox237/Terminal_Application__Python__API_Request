@@ -1,5 +1,6 @@
 
 
+# Receives historical price data of 30 days from Yahoo and outputs the Average price
 class Average:
     def ticker_average(self, ticker_days):
         start_period = 0

@@ -33,7 +33,7 @@ else:
     print("For example, Apple Incorporated would be entered as 'AAPL'")
 
 
-# MAIN CODE
+# MAIN CODE - with try and accept if user inputs incorect input + an exit function
 def main():
     while True:
         ticker = None
@@ -76,6 +76,7 @@ def main():
                 e.add_row([f"{y_mast.get_stats(ticker)}"])
                 print(e)
 
+            # Error handling
             except ValueError:
                 print(Fore.RED + Col.BOLD + "Not valid, please try again.")
             except IndexError:
