@@ -75,7 +75,6 @@ def main():
                 ])
                 e.add_row([f"{y_mast.get_stats(ticker)}"])
                 print(e)
-                print(type(av_mast.ticker_average(y_mast.t_data("AAPL"))))
 
             except ValueError:
                 print(Fore.RED + Col.BOLD + "Not valid, please try again.")
