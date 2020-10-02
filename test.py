@@ -10,10 +10,9 @@ class Testing(unittest.TestCase):
         expectation = "Apple Inc."
         self.assertEqual(result, expectation)
     
-    def test_company_name(self):
+    def test_price(self):
         yahoo_master = Yahoo()
-        result = yahoo_master.company_name("AAPL")
-        expectation = "Apple Inc."
+        result = type(yahoo_master.price("AAPL"))
+        expectation = (<class 'numpy.float64'>)
         self.assertEqual(result, expectation)
-        
         
