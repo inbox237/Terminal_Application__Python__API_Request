@@ -8,8 +8,12 @@ class Testing(unittest.TestCase):
         yahoo_master = Yahoo()
         result = yahoo_master.company_name("AAPL")
         expectation = "Apple Inc."
-        
         self.assertEqual(result, expectation)
-        
+    
+    def test_company_name(self):
+        yahoo_master = Yahoo()
+        result = yahoo_master.company_name("AAPL")
+        expectation = "Apple Inc."
+        self.assertEqual(result, expectation)
         
         

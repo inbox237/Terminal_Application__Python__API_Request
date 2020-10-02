@@ -3,9 +3,7 @@
 import sys
 from prettytable import PrettyTable
 import colorama
-import datetime
 from colorama import Fore
-from yahoo_fin.stock_info import get_data
 from Average import Average
 from Yahoo import Yahoo
 from Color import Color
@@ -46,26 +44,27 @@ def main():
                     return
 
                 yahoo_master = Yahoo()
-                # Dates Defined
-                start_time = datetime.datetime.now() - datetime.timedelta(30)
-                end_date_notime = datetime.datetime.now().strftime("%m/%d/%Y")
-                start_date_notime = start_time.strftime("%m/%d/%Y")
-                
-                
-                ticker_days = get_data(ticker, start_date=start_date_notime, end_date=end_date_notime, index_as_date = True, interval="1d")
-                    
-                data_master = Get_data()    
                 average_master = Average()
-                
-                # OUTPUT TABLE
+                # OUTPUT TABLE 1
                 d = PrettyTable()
-                d.field_names = ([Color.BOLD +Color.UNDERLINE + "Company" + Color.END , Color.BOLD + Color.UNDERLINE + "Current LIVE Price" +Color.END, Color.BOLD +Color.UNDERLINE + "Average Price 30 Days" +Color.END])
-                d.add_row([Color.BOLD +Color.BLUE +  f"{ticker.upper()} - {yahoo_master.company_name(ticker)}"+ Color.END,Color.BOLD +Color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker))+Color.END,"$""{:.2f}".format(average_master.ticker_average(ticker_days))+Color.END])
+                d.field_names = ([Color.BOLD + Color.UNDERLINE + "Company" + Color.END, Color.BOLD + Color.UNDERLINE + "Current LIVE Price" + Color.END, Color.BOLD + Color.UNDERLINE + "Average Price 30 Days" + Color.END])
+                d.add_row([Color.BOLD + Color.BLUE + f"{ticker.upper()} - {yahoo_master.company_name(ticker)}" + Color.END, Color.BOLD + Color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker)) + Color.END, "$""{:.2f}".format(average_master.ticker_average(yahoo_master.get_d(ticker))) + Color.END])
                 print(d)
-                
-            except:
-                print(Fore.RED + Color.BOLD +"Ticker must be a valid Stock Ticker, please try again.")
-                
-                
-main()
 
+                # OUTPUT TABLE 2
+                e = PrettyTable()
+                e.field_names = ([Color.BOLD + Color.UNDERLINE + f"Company - {ticker.upper()} - {yahoo_master.company_name(ticker)}" + Color.END])
+                e.add_row([f"{yahoo_master.get_stats(ticker)}"])
+                print(e)
+
+            except ValueError:
+                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
+            except IndexError:
+                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
+            except NameError:
+                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
+            except:
+                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
+
+
+main()
