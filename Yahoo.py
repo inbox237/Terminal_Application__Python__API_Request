@@ -15,7 +15,7 @@ class Yahoo:
         stock_price = yahoo.get_live_price(ticker)
         return (stock_price)
 
-    def get_d(self, ticker):
+    def t_data(self, ticker):
         start_time = datetime.datetime.now() - datetime.timedelta(30)
         end_date_notime = datetime.datetime.now().strftime("%m/%d/%Y")
         start_date_notime = start_time.strftime("%m/%d/%Y")

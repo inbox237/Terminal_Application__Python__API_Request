@@ -6,7 +6,8 @@ import colorama
 from colorama import Fore
 from Average import Average
 from Yahoo import Yahoo
-from Color import Color
+from Color import Color as Col
+from http.client import InvalidURL
 
 colorama.init(autoreset=True)
 
@@ -43,28 +44,47 @@ def main():
                     print("Program is now exiting, thank you...")
                     return
 
-                yahoo_master = Yahoo()
-                average_master = Average()
-                # OUTPUT TABLE 1
+                y_mast = Yahoo()
+                av_mast = Average()
+                # OUTPUT TABLE 1 - Company Ticker, Company Long Name, Price and Average Price from last 30 days
                 d = PrettyTable()
-                d.field_names = ([Color.BOLD + Color.UNDERLINE + "Company" + Color.END, Color.BOLD + Color.UNDERLINE + "Current LIVE Price" + Color.END, Color.BOLD + Color.UNDERLINE + "Average Price 30 Days" + Color.END])
-                d.add_row([Color.BOLD + Color.BLUE + f"{ticker.upper()} - {yahoo_master.company_name(ticker)}" + Color.END, Color.BOLD + Color.GREEN + "$""{:.2f}".format(yahoo_master.price(ticker)) + Color.END, "$""{:.2f}".format(average_master.ticker_average(yahoo_master.get_d(ticker))) + Color.END])
+                d.field_names = ([
+                    Col.BOLD + Col.UL + "Company" +
+                    Col.END, Col.BOLD + Col.UL +
+                    "Current LIVE Price" +
+                    Col.END, Col.BOLD + Col.UL +
+                    "Average Price 30 Days" +
+                    Col.END])
+                d.add_row([
+                    Col.BOLD + Col.BLUE +
+                    f"{ticker.upper()} - {y_mast.company_name(ticker)}" +
+                    Col.END, Col.BOLD +
+                    Col.GREEN +
+                    "$""{:.2f}".format(y_mast.price(ticker)) +
+                    Col.END, "$""{:.2f}".format(av_mast.ticker_average(y_mast.t_data(ticker))) +
+                    Col.END])
                 print(d)
 
-                # OUTPUT TABLE 2
+                # OUTPUT TABLE 2 - Provides detailed valuation statistics
                 e = PrettyTable()
-                e.field_names = ([Color.BOLD + Color.UNDERLINE + f"Company - {ticker.upper()} - {yahoo_master.company_name(ticker)}" + Color.END])
-                e.add_row([f"{yahoo_master.get_stats(ticker)}"])
+                e.field_names = ([
+                    Col.BOLD +
+                    Col.UL +
+                    f"Company - {ticker.upper()} - {y_mast.company_name(ticker)}" +
+                    Col.END
+                ])
+                e.add_row([f"{y_mast.get_stats(ticker)}"])
                 print(e)
+                print(type(av_mast.ticker_average(y_mast.t_data("AAPL"))))
 
             except ValueError:
-                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
+                print(Fore.RED + Col.BOLD + "Not valid, please try again.")
             except IndexError:
-                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
+                print(Fore.RED + Col.BOLD + "Not valid, please try again.")
             except NameError:
-                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
-            except:
-                print(Fore.RED + Color.BOLD + "Not valid, please try again.")
+                print(Fore.RED + Col.BOLD + "Not valid, please try again.")
+            except InvalidURL:
+                print(Fore.RED + Col.BOLD + "Not valid, please try again.")
 
 
 main()
